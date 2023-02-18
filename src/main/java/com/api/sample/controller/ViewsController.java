@@ -1,11 +1,11 @@
-package com.api.samapi.controller;
+package com.api.sample.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.api.samapi.vo.UserVO;
+import com.api.sample.vo.UserVO;
 
 @Controller
 public class ViewsController {

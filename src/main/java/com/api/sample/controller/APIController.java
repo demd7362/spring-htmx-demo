@@ -1,4 +1,4 @@
-package com.api.samapi.controller;
+package com.api.sample.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 

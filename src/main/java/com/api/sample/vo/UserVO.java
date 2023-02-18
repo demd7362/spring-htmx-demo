@@ -1,4 +1,4 @@
-package com.api.samapi.vo;
+package com.api.sample.vo;
 
 import lombok.Data;
 
