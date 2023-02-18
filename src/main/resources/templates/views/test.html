@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<script th:inline="javascript">
+const param = [[${test}]];
+console.log(param)
+</script>
+<div th:text="${test}"></div>
+
+<!-- map의 경우 
+<div th:if="${not #maps.isEmpty(test)}">
+성공
+</div>
+<div th:unless="${not #maps.isEmpty(test)}">
+실패
+</div> 
+-->
+<div th:if="${test.name}">
+성공
+</div>
+<div th:unless="${test.name}">
+실패
+</div>
+</body>
+</html>
