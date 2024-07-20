@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %highlight(%-5level)[%thread] %cyan(%F:%L) %logger{80} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <springProfile name="!dev">
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${LOG_PATH:-logs}/sdcs-dev.log</file>
+            <encoder>
+                <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n</pattern>
+            </encoder>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_PATH:-logs}/sdcs-dev.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>1000MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+                <maxHistory>200</maxHistory>
+            </rollingPolicy>
+        </appender>
+    </springProfile>
+
+    <logger name="_org" level="INFO" />
+    <logger name="org.thymeleaf" level="INFO" />
+    <logger name="org.springframework" level="INFO" />
+    <logger name="org.apache.ibatis" level="INFO" />
+
+    <!-- Only log SQL queries -->
+    <logger name="jdbc.sqlonly" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <springProfile name="!dev">
+            <appender-ref ref="FILE"/>
+        </springProfile>
+    </logger>
+
+    <!-- Disable other jdbc logs -->
+    <logger name="jdbc" level="OFF" />
+    <logger name="jdbc.connection" level="OFF" />
+    <logger name="jdbc.sqltiming" level="OFF" />
+    <logger name="jdbc.audit" level="OFF" />
+    <logger name="jdbc.resultset" level="OFF" />
+    <logger name="org.mariadb.jdbc" level="WARN" />
+    <logger name="com.zaxxer.hikari" level="ERROR" />
+    <logger name="com.zaxxer.hikari.HikariConfig" level="ERROR" />
+
+
+    <springProfile name="dev">
+        <logger name="jdbc.sqlonly" level="DEBUG" />
+        <root level="INFO">
+            <appender-ref ref="STDOUT" />
+        </root>
+    </springProfile>
+
+    <springProfile name="prod">
+        <logger name="jdbc.sqlonly" level="WARN" />
+        <root level="INFO">
+            <appender-ref ref="FILE" />
+        </root>
+    </springProfile>
+
+</configuration>

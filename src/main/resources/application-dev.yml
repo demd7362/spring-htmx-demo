@@ -1,0 +1,41 @@
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  port: 80
+
+spring:
+  web:
+    resources:
+      static-locations: classpath:/static/
+  jpa:
+    hibernate:
+      ddl-auto: update # hibernate에서 제공
+#      naming:
+#        physical-strategy: com.spm.common.strategy.CamelToSnakeUpperStrategy
+    show-sql: true  # SQL 쿼리 로깅 여부
+    generate-ddl: false # 이 설정은 스프링 부트에서 제공
+    open-in-view: false # HTTP 요청이 완전히 처리될 때까지 데이터베이스 세션을 열어두기
+  datasource:
+    hikari:
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      jdbc-url: jdbc:log4jdbc:mysql://144.24.74.58:3306/TX
+      username: jhjh
+      password: Wjd4784!!
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+  mvc: # view setting
+    hiddenmethod:
+      filter:
+        enabled: true
+  thymeleaf:
+    cache: false
+    check-template-location: true
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
