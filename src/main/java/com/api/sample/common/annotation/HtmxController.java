@@ -1,4 +1,4 @@
-package com.api.sample.common.annotations;
+package com.api.sample.common.annotation;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

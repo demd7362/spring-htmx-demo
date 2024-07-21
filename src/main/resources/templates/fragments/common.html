@@ -1,12 +1,14 @@
-<th:block th:fragment='commonFragments'>
+<th:block th:fragment="commonHeader">
     <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/2.0.1/htmx.min.js" integrity="sha512-/POjPSnGjDaJfmt9O7LOTz1eGoCQNsVSJdgxYTVjhnWRDmuDFTvzwQrxIxipRrakLw7IYJfOsanDe7WuP40zxw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" id="waterSheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
     <script th:src='@{/js/common.js}'></script>
+</th:block>
+<th:block th:fragment="commonBody">
     <dialog id="dialog">
         <h2 id="dialogTitle"></h2>
         <p id="dialogContent"></p>
-        <button onclick="this.parentNode.close()">닫기</button>
+        <button id="closeDialog">닫기</button>
     </dialog>
     <button id="theme" style="position: fixed; top: 50px; right: 50px; margin: 0px; padding: 10px; line-height: 1;">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon">

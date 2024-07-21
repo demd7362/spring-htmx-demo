@@ -1,4 +1,4 @@
-package com.api.sample.common.tools;
+package com.api.sample.common.tool;
 
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -25,6 +25,21 @@ public class Html {
             return " " + attrs;
         }
         return "";
+    }
+
+    public static Html javaScript(String javaScript) {
+        return new Html("script", "text", javaScript);
+    }
+
+    public static Html openDialog(String title, String content, String callback) {
+        if (!callback.startsWith("()") || !callback.startsWith("function")) {
+            callback = "function(){ " + callback + " }";
+        }
+        return javaScript("openDialog('%s','%s',%s)".formatted(title, content, callback));
+    }
+
+    public static Html openDialog(String title, String content) {
+        return javaScript("openDialog('%s','%s')".formatted(title, content));
     }
 
     public boolean hasClass(String className) {

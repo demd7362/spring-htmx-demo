@@ -1,4 +1,4 @@
-package com.api.sample.common.constants;
+package com.api.sample.common.constant;
 
 
 public class Constants {

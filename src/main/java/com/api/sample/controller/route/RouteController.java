@@ -17,4 +17,8 @@ public class RouteController {
     public String loginRouter() {
         return "login";
     }
+    @GetMapping("/join")
+    public String joinRouter() {
+        return "join";
+    }
 }

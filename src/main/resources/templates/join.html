@@ -2,16 +2,17 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
-    <title>로그인</title>
+    <title>회원가입</title>
     <th:block th:replace='~{fragments/common :: commonHeader}'/>
 </head>
 <body>
-<form action="/login" method="post">
-    <input type="text" th:value="${param.username}" name="username" placeholder="아이디" required>
+<form hx-post="/hx/join" hx-target="#joinResult">
+    <input type="text" name="username" placeholder="아이디" required>
     <input type="password" name="password" placeholder="비밀번호" required>
-    <button type="submit">로그인</button>
+    <input type="password" name="passwordConfirmation" placeholder="비밀번호 확인" required>
+    <button type="submit">회원가입</button>
 </form>
-<div id="loginResult"></div>
+<div id="joinResult"></div>
 <th:block th:replace='~{fragments/common :: commonBody}'/>
 </body>
 </html>
