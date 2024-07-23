@@ -28,7 +28,7 @@ public class Html {
     }
 
     public static Html javaScript(String javaScript) {
-        return new Html("script", "text", javaScript);
+        return new Html("script", CONTENT_KEY, javaScript);
     }
 
     public static Html openDialog(String title, String content, String callback) {
@@ -188,7 +188,7 @@ public class Html {
         for (Html children : html.childrens) {
             builder.append(children.toString());
         }
-        String text = html.attributes.getOrDefault("text", "");
+        String text = html.attributes.getOrDefault(CONTENT_KEY, "");
         String formattedElement = TEMPLATE.formatted(html.tag, html.getAttributesAsString(), text, builder.toString(), html.tag);
         StringBuilder element = new StringBuilder(formattedElement);
         for (Html brother : html.brothers) {

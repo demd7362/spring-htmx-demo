@@ -2,6 +2,7 @@ package com.api.sample.common.config;
 
 
 import com.api.sample.common.constant.Constants;
+import com.api.sample.common.oauth2.OAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
+    private final OAuth2UserService oAuth2UserService;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -42,6 +44,15 @@ public class SecurityConfig {
                             .deleteCookies("JSESSIONID")
                             .logoutSuccessUrl(Constants.URL.LOGIN)
                             .permitAll();
+                })
+                .oauth2Login(httpSecurityOAuth2LoginConfigurer -> {
+                    httpSecurityOAuth2LoginConfigurer
+                            .defaultSuccessUrl("/")
+                            .loginPage(Constants.URL.LOGIN)
+                            .userInfoEndpoint(userInfoEndpointConfig -> {
+                                userInfoEndpointConfig.userService(oAuth2UserService);
+                            });
+
                 })
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> {
                     httpSecuritySessionManagementConfigurer

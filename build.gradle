@@ -37,6 +37,11 @@ dependencies {
 	implementation 'com.mysql:mysql-connector-j:8.2.0'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.springframework.security:spring-security-oauth2-client:6.3.1'
+
+
+
 	// https://mvnrepository.com/artifact/io.github.wimdeblauwe/htmx-spring-boot-thymeleaf
 //	implementation 'io.github.wimdeblauwe:htmx-spring-boot-thymeleaf:3.4.1'
 

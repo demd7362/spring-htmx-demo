@@ -1,5 +1,6 @@
 package com.api.sample.dto.user;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

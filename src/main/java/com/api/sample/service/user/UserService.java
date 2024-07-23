@@ -15,7 +15,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void join(JoinRequestDto joinRequestDto){
+    public User join(JoinRequestDto joinRequestDto){
         String username = joinRequestDto.getUsername();
         String password = joinRequestDto.getPassword();
         if(userRepository.existsByUsername(username)){
@@ -29,6 +29,6 @@ public class UserService {
                 .username(username)
                 .password(encryptedPassword)
                 .build();
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 }

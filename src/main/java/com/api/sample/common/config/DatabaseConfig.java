@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -30,7 +31,11 @@ public class DatabaseConfig {
     @Bean
     public AuditorAware<Long> auditorProvider() {
         return () -> {
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if(authentication == null){
+                return Optional.empty();
+            }
+            Object principal = authentication.getPrincipal();
             if(principal instanceof PrincipalDetails principalDetails) {
                 Long id = principalDetails.user().getId();
                 return Optional.of(id);

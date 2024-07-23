@@ -1,5 +1,6 @@
 package com.api.sample.entity.user;
 
+import com.api.sample.common.enums.LoginType;
 import com.api.sample.entity.common.CommonProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,9 @@ public class User extends CommonProperties implements Serializable {
     private String username;
     @Column(nullable = false, columnDefinition = "varchar(200)")
     private String password;
-
+    @Column(name = "login_type")
+    @Enumerated(EnumType.STRING)
+    private LoginType loginType;
 
 
 }
