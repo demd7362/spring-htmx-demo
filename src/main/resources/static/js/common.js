@@ -3,6 +3,7 @@ htmx.logger = function (elt, event, data) {
         console.log(event, elt, data);
     }
 }
+
 $(function () {
     const isDarkMode = localStorage.getItem('isDarkMode');
     if (isDarkMode === null) {
@@ -18,6 +19,13 @@ $(function () {
         } else {
             setDarkMode();
         }
+    });
+    $('form').each(function(form) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            // HTMX가 폼 전송을 처리하도록 유지
+            htmx.trigger(form, 'submit');
+        });
     });
 })
 
@@ -47,3 +55,11 @@ function openDialog(title, content, callback) {
         callback?.();
     });
 }
+
+function removeLastChild(selector) {
+    $(selector)
+        .children()
+        .last()
+        .remove();
+}
+

@@ -12,14 +12,18 @@ public class RouteController {
     }
     @GetMapping("/login")
     public String loginRouter() {
-        return "login";
+        return "user/login";
     }
     @GetMapping("/join")
     public String joinRouter() {
-        return "join";
+        return "user/join";
     }
     @GetMapping("/board")
     public String boardRouter() {
         return "board";
+    }
+    @GetMapping("/generator")
+    public String generatorRouter() {
+        return "generator";
     }
 }

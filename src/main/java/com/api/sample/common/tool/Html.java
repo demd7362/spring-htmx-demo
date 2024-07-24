@@ -59,9 +59,9 @@ public class Html {
     }
 
     public void addClass(String... classNames) {
-
         String classes = this.attributes.get("class");
         if (classes == null) {
+            this.attributes.put("class", String.join(" ", classNames));
             return;
         }
         StringBuilder classBuilder = new StringBuilder(classes);
@@ -101,7 +101,11 @@ public class Html {
                 if (attributes[i].equals("class")) {
                     this.classes.add(attributes[i + 1]);
                 }
-                this.attributes.put(attributes[i], attributes[i + 1]);
+                if (attributes[i].equals("style")) {
+                    this.attributes.put(attributes[i], attributes[i + 1].replaceAll(" ", ""));
+                } else {
+                    this.attributes.put(attributes[i], attributes[i + 1]);
+                }
             }
         }
     }
@@ -115,7 +119,11 @@ public class Html {
                 if (attribute.getKey().equals("class")) {
                     this.classes.add(attribute.getKey());
                 }
-                this.attributes.put(attribute.getKey(), attribute.getValue());
+                if (attribute.getKey().equals("style")) {
+                    this.attributes.put(attribute.getKey(), attribute.getValue().replaceAll(" ", ""));
+                } else {
+                    this.attributes.put(attribute.getKey(), attribute.getValue());
+                }
             }
         }
     }
@@ -146,7 +154,7 @@ public class Html {
         return this.putFirst(new Html(tag, attributes));
     }
 
-    private Html putFirst(Html html) {
+    public Html putFirst(Html html) {
         this.childrens.addFirst(html);
         return html;
     }
@@ -159,7 +167,7 @@ public class Html {
         return this.putLast(new Html(tag, attributes));
     }
 
-    private Html putLast(Html html) {
+    public Html putLast(Html html) {
         this.childrens.addLast(html);
         return html;
     }
@@ -172,7 +180,7 @@ public class Html {
         return append(new Html(tag, attributes));
     }
 
-    private Html append(Html html) {
+    public Html append(Html html) {
         this.brothers.add(html);
         return html;
     }

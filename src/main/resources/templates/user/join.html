@@ -6,7 +6,7 @@
     <th:block th:replace='~{fragments/common :: commonHeader}'/>
 </head>
 <body>
-<form hx-post="/hx/join" hx-target="#joinResult">
+<form hx-post="/hx/join/script" hx-target="#joinResult">
     <input type="text" name="username" placeholder="아이디" required>
     <input type="password" name="password" placeholder="비밀번호" required>
     <input type="password" name="passwordConfirmation" placeholder="비밀번호 확인" required>
