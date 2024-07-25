@@ -10,7 +10,9 @@
 <div class="flex-row">
     <button hx-target="#jsonProperties" hx-get="/hx/json-property/input" hx-swap="beforeend">+</button>
     <button onclick="removeLastChild('#jsonProperties')">-</button>
-    <button hx-target="#result" hx-include="#jsonProperties input" hx-post="/hx/json-generator/textarea">Generate</button>
+    <button hx-target="#result" hx-vals='js:{values: collectJsonProperties("#jsonProperties input")}' hx-post="/hx/json-generator/textarea">
+        Generate
+    </button>
 </div>
 <div id="jsonProperties"></div>
 <div id="result">

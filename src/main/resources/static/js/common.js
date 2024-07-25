@@ -20,8 +20,8 @@ $(function () {
             setDarkMode();
         }
     });
-    $('form').each(function(form) {
-        form.addEventListener('submit', function(event) {
+    $('form').each(function (form) {
+        form.addEventListener('submit', function (event) {
             event.preventDefault();
             // HTMX가 폼 전송을 처리하도록 유지
             htmx.trigger(form, 'submit');
@@ -61,5 +61,17 @@ function removeLastChild(selector) {
         .children()
         .last()
         .remove();
+}
+
+function collectJsonProperties(selector) {
+    const $inputs = $(selector);
+    const result = []
+    $inputs.each(function () {
+        const jsonType = $(this).prev().val();
+        result.push({
+            [jsonType]: $(this).val()
+        })
+    })
+    return JSON.stringify(result);
 }
 
