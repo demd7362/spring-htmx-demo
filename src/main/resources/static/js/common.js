@@ -57,21 +57,25 @@ function openDialog(title, content, callback) {
 }
 
 function removeLastChild(selector) {
-    $(selector)
-        .children()
-        .last()
-        .remove();
+    for(let i = 0; i < 2; i++){
+        $(selector).children().last().remove();
+    }
 }
 
 function collectJsonProperties(selector) {
     const $inputs = $(selector);
-    const result = []
+    const result = [];
     $inputs.each(function () {
         const jsonType = $(this).prev().val();
+        const attribute = $(this).val();
+        if(!attribute.trim()){
+            openDialog('에러','Key 값을 입력해주세요.', () => $(this).focus());
+            return;
+        }
         result.push({
-            [jsonType]: $(this).val()
+            [jsonType]: attribute
         })
-    })
+    });
     return JSON.stringify(result);
 }
 
