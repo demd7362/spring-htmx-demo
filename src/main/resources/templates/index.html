@@ -6,12 +6,17 @@
     <th:block th:replace='~{fragments/common :: commonHeader}'/>
 </head>
 <body>
+<th:block th:if="${#authentication.principal != 'anonymousUser'}">
+    <a th:href="@{/logout}" hx-boost="true">로그아웃</a><br>
+</th:block>
 <a th:href="@{/login}" hx-boost="true">로그인</a><br>
 <a href="/oauth2/authorization/kakao" >카카오 로그인</a><br>
 <a th:href="@{/join}" hx-boost="true">회원가입</a><br>
 <a th:href="@{/generator}" hx-boost="true">Random Json Generator</a><br>
 <a th:href="@{/board}" hx-boost="true">게시판</a><br>
-<span th:if="${#authentication.principal != 'anonymousUser'}">[[${#authentication.principal.user.username}]]님 어서옵쇼</span>
+<span th:if="${#authentication.principal != 'anonymousUser'}">
+    [[${#authentication.principal.user.username}]]님 어서옵쇼
+</span>
 <th:block th:replace='~{fragments/common :: commonBody}'/>
 </body>
 </html>

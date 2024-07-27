@@ -23,10 +23,12 @@ public class DatabaseConfig {
     @ConfigurationProperties("spring.datasource.hikari")
     @Bean
     public DataSource dataSource() {
+        // TODO linux라면 json 불러와 datasource 구성
         return DataSourceBuilder.create()
                 .type(HikariDataSource.class)
                 .build();
     }
+
 
     @Bean
     public AuditorAware<Long> auditorProvider() {

@@ -7,7 +7,7 @@ import org.springframework.util.StringUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Html {
+public final class Html {
     private final Deque<Html> childrens = new ArrayDeque<>();
     private final List<Html> brothers = new ArrayList<>();
     private final String tag;
@@ -97,7 +97,7 @@ public class Html {
             throw new IllegalArgumentException("Attributes must be even. " + this);
         }
         for (int i = 0; i < attributes.length; i += 2) {
-            if (StringUtils.hasText(attributes[i]) && StringUtils.hasText(attributes[i + 1])) {
+            if (StringUtils.hasText(attributes[i])) {
                 if (attributes[i].equals("class")) {
                     this.classes.add(attributes[i + 1]);
                 }
@@ -115,7 +115,7 @@ public class Html {
             return;
         }
         for (var attribute : attributes.entrySet()) {
-            if (StringUtils.hasText(attribute.getKey()) && StringUtils.hasText(attribute.getValue())) {
+            if (StringUtils.hasText(attribute.getKey())) {
                 if (attribute.getKey().equals("class")) {
                     this.classes.add(attribute.getKey());
                 }

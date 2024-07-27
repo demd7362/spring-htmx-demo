@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
 @RequestMapping("/hx")
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface HtmxController {
+public @interface HtmxRenderer {
 }

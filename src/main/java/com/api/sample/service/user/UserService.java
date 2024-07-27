@@ -1,5 +1,6 @@
 package com.api.sample.service.user;
 
+import com.api.sample.common.enums.Role;
 import com.api.sample.common.exception.HtmxException;
 import com.api.sample.common.tool.Html;
 import com.api.sample.dto.user.JoinRequestDto;
@@ -28,6 +29,7 @@ public class UserService {
         User user = User.builder()
                 .username(username)
                 .password(encryptedPassword)
+                .role(Role.ROLE_USER)
                 .build();
         return userRepository.save(user);
     }

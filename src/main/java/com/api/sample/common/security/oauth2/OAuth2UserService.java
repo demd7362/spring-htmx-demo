@@ -1,4 +1,4 @@
-package com.api.sample.common.oauth2;
+package com.api.sample.common.security.oauth2;
 
 import com.api.sample.common.enums.LoginType;
 import com.api.sample.common.exception.HtmxException;

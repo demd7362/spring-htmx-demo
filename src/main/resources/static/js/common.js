@@ -64,18 +64,30 @@ function removeLastChild(selector) {
 
 function collectJsonProperties(selector) {
     const $inputs = $(selector);
-    const result = [];
-    $inputs.each(function () {
-        const jsonType = $(this).prev().val();
-        const attribute = $(this).val();
-        if(!attribute.trim()){
-            openDialog('에러','Key 값을 입력해주세요.', () => $(this).focus());
-            return;
+    let properties = [];
+    for (let i = 0; i < $inputs.length; i++) {
+        const $input = $inputs.eq(i);
+        const jsonType = $input.prev().val();
+        const attribute = $input.val(); // json 리턴받을 시의 key 값
+
+        const duplicateKeyExists = properties.some(prop => {
+            return prop[jsonType] === attribute;
+        });
+
+        if (duplicateKeyExists) {
+            openDialog('주의', '중복되는 key값이 있습니다.', () => $input.focus());
+            return "[]";
         }
-        result.push({
+
+        if (!attribute.trim()) {
+            openDialog('에러', 'Key 값을 입력해주세요.', () => $input.focus());
+            return "[]";
+        }
+
+        properties.push({
             [jsonType]: attribute
-        })
-    });
-    return JSON.stringify(result);
+        });
+    }
+    return JSON.stringify(properties);
 }
 

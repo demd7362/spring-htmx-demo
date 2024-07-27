@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class HtmxException extends RuntimeException{
+public class HtmxException extends RuntimeException {
 
     private final Html html;
 
