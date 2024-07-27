@@ -2,12 +2,14 @@ package com.api.sample.common.config;
 
 
 import com.api.sample.common.constant.Constants;
+import com.api.sample.common.model.OAuth2Secret;
 import com.api.sample.common.security.oauth2.OAuth2UserService;
 import com.api.sample.common.security.CustomAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -16,6 +18,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -43,14 +50,14 @@ public class SecurityConfig {
                 .formLogin(httpSecurityFormLoginConfigurer -> {
                     httpSecurityFormLoginConfigurer
                             .loginPage(Constants.URL.LOGIN)
-                            .loginProcessingUrl("/login")
+                            .loginProcessingUrl(Constants.URL.LOGIN)
                             .usernameParameter("username")
                             .passwordParameter("password")
                             .defaultSuccessUrl(Constants.URL.INDEX);
                 })
                 .logout(httpSecurityLogoutConfigurer -> {
                     httpSecurityLogoutConfigurer
-                            .logoutUrl("/logout")
+                            .logoutUrl(Constants.URL.LOGOUT)
                             .deleteCookies("JSESSIONID")
                             .logoutSuccessUrl(Constants.URL.INDEX)
                             .permitAll();
@@ -79,6 +86,26 @@ public class SecurityConfig {
 //                            .requestMatchers("/","/login","/logout","/join").permitAll()
                             .anyRequest().permitAll();
                 })
+                .build();
+    }
+    @Bean
+    @DependsOn("oAuth2Secret")
+    public ClientRegistrationRepository clientRegistrationRepository(OAuth2Secret oAuth2Secret) {
+        return new InMemoryClientRegistrationRepository(this.kakaoClientRegistration(oAuth2Secret));
+    }
+
+    private ClientRegistration kakaoClientRegistration(OAuth2Secret oAuth2Secret) {
+        return ClientRegistration.withRegistrationId("kakao") // /oauth2/authorization/{withRegistrationId} url로 접근해서 인증 시작
+                .clientId(oAuth2Secret.getKakaoClient().getClientId())
+                .clientSecret(oAuth2Secret.getKakaoClient().getClientSecret())
+                .authorizationUri("https://kauth.kakao.com/oauth/authorize")
+                .tokenUri("https://kauth.kakao.com/oauth/token")
+                .userInfoUri("https://kapi.kakao.com/v2/user/me")
+                .userNameAttributeName("id")
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
+                .redirectUri("http://localhost/login/oauth2/code/kakao")
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .scope("profile_nickname")
                 .build();
     }
 }

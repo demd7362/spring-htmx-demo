@@ -52,7 +52,7 @@ public class JsonRenderer {
                 if (function != null) {
                     result.put(v, function.apply(k).toString());
                 } else {
-                    result.put(k, v);
+                    throw new HtmxException(Html.javaScript("openDialog('에러','비정상적인 접근입니다.')"));
                 }
             });
         }

@@ -11,11 +11,38 @@
         <p id="dialogContent"></p>
         <button id="closeDialog">닫기</button>
     </dialog>
-    <button id="theme" style="position: fixed; top: 50px; right: 50px; margin: 0px; padding: 10px; line-height: 1;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-    </button>
+    <div style="position: fixed; top: 50px; right: 50px; margin: 0px; padding: 10px; line-height: 1;">
+        <button onclick="toggleMode()" style="margin-left: 100px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+        <details>
+            <summary>
+                <th:block th:if="${#authentication.principal != 'anonymousUser'}">
+                    Hello, <span th:text="${#authentication.principal.user.username}">닉네임</span>
+                </th:block>
+                <th:block th:unless="${#authentication.principal != 'anonymousUser'}">
+                    Hello
+                </th:block>
+            </summary>
+            <button onclick="clickMenu(this)">메인</button>
+            <a style="display:none;" th:href="@{/}" hx-boost="true"></a>
+            <th:block th:if="${#authentication.principal != 'anonymousUser'}">
+                <button onclick="clickMenu(this)">로그아웃</button>
+                <a style="display:none;" th:href="@{/logout}" hx-boost="true"></a>
+            </th:block>
+            <button onclick="clickMenu(this)">로그인</button>
+            <a style="display:none;" th:href="@{/login}" hx-boost="true"></a>
+            <button onclick="clickMenu(this)">카카오 로그인</button>
+            <a style="display:none;" href="/oauth2/authorization/kakao"></a>
+            <button onclick="clickMenu(this)">회원가입</button>
+            <a style="display:none;" th:href="@{/join}" hx-boost="true">회원가입</a>
+        </details>
+    </div>
     <div id="script"></div>
 </th:block>
+<div th:fragment="commonFooter">
+
+</div>
 

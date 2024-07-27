@@ -7,9 +7,11 @@ import com.api.sample.common.util.SecurityUtils;
 import com.api.sample.entity.user.JsonProperty;
 import com.api.sample.entity.user.User;
 import com.api.sample.repository.JsonPropertyRepository;
+import io.micrometer.core.instrument.binder.logging.LogbackMetrics;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,7 @@ public class JsonService {
     private final JsonPropertyRepository jsonPropertyRepository;
     @Getter
     private final Map<String, Function<String, Object>> functionMap = new LinkedHashMap<>();
+    private final LogbackMetrics logbackMetrics;
     @Getter
     private String selectRoot;
 
@@ -77,30 +80,18 @@ public class JsonService {
         if (jsonProperties.isEmpty()) {
             throw new HtmxException(Html.javaScript("openDialog('불러오기','저장된 값이 없습니다.')"));
         }
-        // select 만들고 sibling으로 append 하기 위함
-        Html root = Html.createRoot("select");
-        functionMap.keySet().forEach(type -> {
-            if (type.equals(jsonProperties.get(0).getType())) {
-                root.putLast("option",
-                        "text", type,
-                        "selected", "");
-            } else {
-                root.putLast("option", "text", type);
-            }
-        });
-        root.append("input", "type", "text",
-                "placeholder", "Key",
-                "value", jsonProperties.get(0).getAttribute()
-        );
-        for (int i = 1; i < jsonProperties.size(); i++) {
+        Html root = null;
+        for (int i = 0; i < jsonProperties.size(); i++) {
             JsonProperty jsonProperty = jsonProperties.get(i);
             Html select = Html.createRoot("select");
-            root.append(select);
+            if(i == 0){
+                root = select;
+            } else {
+                root.append(select);
+            }
             functionMap.keySet().forEach(type -> {
                 if (type.equals(jsonProperty.getType())) {
-                    select.putLast("option",
-                            "text", type,
-                            "selected", "");
+                    select.putLast("option", "text", type, "selected", "");
                 } else {
                     select.putLast("option", "text", type);
                 }

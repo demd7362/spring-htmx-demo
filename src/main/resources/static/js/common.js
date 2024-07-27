@@ -4,7 +4,7 @@ htmx.logger = function (elt, event, data) {
     }
 }
 
-$(function () {
+function toggleMode(){
     const isDarkMode = localStorage.getItem('isDarkMode');
     if (isDarkMode === null) {
         localStorage.setItem('isDarkMode', "false");
@@ -13,20 +13,16 @@ $(function () {
     } else {
         setLightMode();
     }
-    $('#theme').on('click', function () {
-        if ($('#waterSheet').attr('href').includes('dark')) {
-            setLightMode();
-        } else {
-            setDarkMode();
-        }
-    });
-    $('form').each(function (form) {
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
-            // HTMX가 폼 전송을 처리하도록 유지
-            htmx.trigger(form, 'submit');
-        });
-    });
+    if ($('#waterSheet').attr('href').includes('dark')) {
+        setLightMode();
+    } else {
+        setDarkMode();
+    }
+}
+
+/* htmx에서는 hx-boost로 이동 시 onload가 작동하지 않음 */
+$(function () {
+
 })
 
 function setLightMode() {
@@ -91,3 +87,6 @@ function collectJsonProperties(selector) {
     return JSON.stringify(properties);
 }
 
+function clickMenu(that){
+    $(that).next()[0].click();
+}

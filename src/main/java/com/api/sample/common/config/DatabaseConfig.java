@@ -1,32 +1,38 @@
 package com.api.sample.common.config;
 
+import com.api.sample.common.model.DatabaseSecret;
 import com.api.sample.common.security.PrincipalDetails;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.util.Optional;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "com.api.sample.repository")
 @EnableJpaAuditing
+@RequiredArgsConstructor
 public class DatabaseConfig {
-    @ConfigurationProperties("spring.datasource.hikari")
     @Bean
-    public DataSource dataSource() {
-        // TODO linux라면 json 불러와 datasource 구성
-        return DataSourceBuilder.create()
-                .type(HikariDataSource.class)
-                .build();
+    @DependsOn("databaseSecret")
+    public DataSource dataSource(DatabaseSecret databaseSecret) throws IOException {
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setJdbcUrl(databaseSecret.getJdbcUrl());
+        hikariConfig.setUsername(databaseSecret.getUsername());
+        hikariConfig.setPassword(databaseSecret.getPassword());
+        hikariConfig.setDriverClassName(databaseSecret.getDriverClassName());
+        return new HikariDataSource(hikariConfig);
     }
 
 

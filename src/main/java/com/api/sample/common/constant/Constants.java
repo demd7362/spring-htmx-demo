@@ -6,5 +6,6 @@ public class Constants {
         public static final String LOGIN = "/login";
         public static final String JOIN = "/join";
         public static final String INDEX = "/";
+        public static final String LOGOUT = "/logout";
     }
 }

@@ -18,12 +18,6 @@ spring:
     show-sql: true  # SQL 쿼리 로깅 여부
     generate-ddl: false # 이 설정은 스프링 부트에서 제공
     open-in-view: false # HTTP 요청이 완전히 처리될 때까지 데이터베이스 세션을 열어두기
-  datasource:
-    hikari:
-      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-      jdbc-url: jdbc:log4jdbc:mysql://144.24.74.58:3306/TX
-      username: jhjh
-      password: Wjd4784!!
   devtools:
     restart:
       enabled: true
@@ -39,23 +33,4 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
     encoding: UTF-8
-  security:
-    oauth2:
-      client:
-        provider:
-          kakao: # /oauth2/authorization/{provider-name} url로 접근해서 인증 시작
-            authorization-uri: https://kauth.kakao.com/oauth/authorize
-            token-uri: https://kauth.kakao.com/oauth/token
-            user-info-uri: https://kapi.kakao.com/v2/user/me
-            user-name-attribute: id # 카카오에서 사용하는 값
-        registration:
-          kakao:
-            client-id: fa354dce33ecdbc904e2a9bf52224476
-            client-secret: FxfHAW9pDskkS7fEAzZsChQoQqoFwfV0
-            client-authentication-method: client_secret_post
-            redirect-uri: http://localhost/login/oauth2/code/kakao # default url pattern http://{domain}/login/oauth2/code/{registrationId}
-            authorization-grant-type: authorization_code
-            client-name: kakao
-            scope:
-              - profile_nickname
 
