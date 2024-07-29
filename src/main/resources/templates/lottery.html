@@ -2,12 +2,13 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
-    <title>게시판</title>
+    <title>로또</title>
     <th:block th:replace='~{fragments/common :: commonHeader}'/>
 </head>
 <body>
-
-
+<input type="number" id="count" value="1"/>
+<button hx-target="#result" hx-vals="js:{count: $('#count').val()}" hx-get="/hx/generate-lottery/textarea">Buy</button>
+<div id="result"></div>
 
 <th:block th:replace='~{fragments/common :: commonBody}'/>
 <th:block th:replace='~{fragments/common :: commonFooter}'/>

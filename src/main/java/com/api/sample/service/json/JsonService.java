@@ -5,13 +5,13 @@ import com.api.sample.common.tool.Html;
 import com.api.sample.common.util.RandomUtils;
 import com.api.sample.common.util.SecurityUtils;
 import com.api.sample.entity.user.JsonProperty;
+import com.api.sample.entity.user.JsonPropertyParent;
 import com.api.sample.entity.user.User;
+import com.api.sample.repository.JsonPropertyParentRepository;
 import com.api.sample.repository.JsonPropertyRepository;
-import io.micrometer.core.instrument.binder.logging.LogbackMetrics;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,9 +25,9 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class JsonService {
     private final JsonPropertyRepository jsonPropertyRepository;
+    private final JsonPropertyParentRepository jsonPropertyParentRepository;
     @Getter
     private final Map<String, Function<String, Object>> functionMap = new LinkedHashMap<>();
-    private final LogbackMetrics logbackMetrics;
     @Getter
     private String selectRoot;
 
@@ -52,31 +52,36 @@ public class JsonService {
 
     @Transactional
     public void saveJsonProperties(List<Map<String, String>> properties) {
-        if(properties.isEmpty()){
+        if (properties.isEmpty()) {
             throw new IllegalArgumentException();
         }
         User user = SecurityUtils.currentUser();
-        jsonPropertyRepository.deleteAllByUserId(user.getId());
+        JsonPropertyParent jsonPropertyParent = JsonPropertyParent.builder()
+                .user(user)
+                .build();
+        jsonPropertyParentRepository.save(jsonPropertyParent);
         List<JsonProperty> jsonProperties = new ArrayList<>();
         for (Map<String, String> property : properties) {
             for (var entry : property.entrySet()) {
                 String type = entry.getKey();
                 String attribute = entry.getValue();
+
                 JsonProperty jsonProperty = JsonProperty.builder()
                         .type(type)
                         .attribute(attribute)
-                        .user(user)
+                        .jsonPropertyParent(jsonPropertyParent)
                         .build();
                 jsonProperties.add(jsonProperty);
             }
         }
         jsonPropertyRepository.saveAll(jsonProperties);
+
     }
 
     @Transactional(readOnly = true)
-    public Html loadJsonProperties() {
+    public Html loadJsonProperties(long parentId) {
         User user = SecurityUtils.currentUser();
-        List<JsonProperty> jsonProperties = jsonPropertyRepository.findAllByUserId(user.getId());
+        List<JsonProperty> jsonProperties = jsonPropertyRepository.findAllByJsonPropertyParentIdAndJsonPropertyParentUserId(parentId, user.getId());
         if (jsonProperties.isEmpty()) {
             throw new HtmxException(Html.javaScript("openDialog('불러오기','저장된 값이 없습니다.')"));
         }
@@ -84,7 +89,7 @@ public class JsonService {
         for (int i = 0; i < jsonProperties.size(); i++) {
             JsonProperty jsonProperty = jsonProperties.get(i);
             Html select = Html.createRoot("select");
-            if(i == 0){
+            if (i == 0) {
                 root = select;
             } else {
                 root.append(select);
@@ -102,5 +107,25 @@ public class JsonService {
             );
         }
         return root;
+    }
+
+    public Html getIndexOptions() {
+        User user = SecurityUtils.currentUser();
+        Html root = Html.createRoot("select");
+        List<JsonPropertyParent> parents = jsonPropertyParentRepository.findAllByUserId(user.getId());
+        if(parents.isEmpty()){
+            return null;
+        }
+        for (int i = 0; i < parents.size(); i++) {
+            JsonPropertyParent parent = parents.get(i);
+            root.putLast("option", "text", String.valueOf(i + 1),
+                    "data-val", parent.getId().toString()
+            );
+        }
+        return root;
+    }
+    @Transactional
+    public void deleteJsonProperties(long parentId) {
+        jsonPropertyParentRepository.deleteById(parentId);
     }
 }

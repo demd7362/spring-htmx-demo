@@ -46,4 +46,5 @@ public class AppConfig {
         String json = Files.readString(path);
         return objectMapper.readValue(json, OAuth2Secret.class);
     }
+
 }

@@ -15,8 +15,6 @@ public class RouteController {
 
     @GetMapping("/")
     public String indexRouter() {
-        var isAuthenticated = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        log.info("{}" , isAuthenticated);
         return "index";
     }
     @GetMapping("/login")
@@ -27,10 +25,10 @@ public class RouteController {
     public String joinRouter() {
         return "user/join";
     }
-    @GetMapping("/board")
+    @GetMapping("/lottery")
     @Secured("ROLE_USER")
     public String boardRouter() {
-        return "board";
+        return "lottery";
     }
     @GetMapping("/generator")
     @Secured("ROLE_USER")

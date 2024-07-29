@@ -7,10 +7,7 @@
 </head>
 <body>
 <a th:href="@{/generator}" hx-boost="true">Random Json Generator</a><br>
-<a th:href="@{/board}" hx-boost="true">게시판</a><br>
-<span th:if="${#authentication.principal != 'anonymousUser'}">
-    [[${#authentication.principal.user.username}]]님 어서옵쇼
-</span>
+<a th:href="@{/lottery}" hx-boost="true">Lottery</a><br>
 <th:block th:replace='~{fragments/common :: commonBody}'/>
 <th:block th:replace='~{fragments/common :: commonFooter}'/>
 </body>

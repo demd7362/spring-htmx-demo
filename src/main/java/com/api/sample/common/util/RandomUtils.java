@@ -3,6 +3,9 @@ package com.api.sample.common.util;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 @UtilityClass
 public class RandomUtils {
@@ -39,6 +42,27 @@ public class RandomUtils {
                     "보길",
                     "종호",
                     "수호",
+                    "민준",
+                    "서준",
+                    "지안",
+                    "시우",
+                    "하준",
+                    "서연",
+                    "지우",
+                    "서현",
+                    "윤아",
+                    "유진",
+                    "예진",
+                    "민서",
+                    "지호",
+                    "민지",
+                    "다영",
+                    "유빈",
+                    "수빈",
+                    "해민",
+                    "도윤",
+                    "예은",
+                    "지영"
             };
     private static final int[] LAST_DAYS = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
@@ -84,6 +108,16 @@ public class RandomUtils {
     private boolean isBornIn21Century(int year) {
         String currentYear = String.valueOf(LocalDate.now().getYear()).substring(2, 4);
         return Integer.parseInt(currentYear) > year;
+    }
+
+    public Set<Integer> generateLotteryNumber(){
+        Set<Integer> lottoNumbers = new HashSet<>();
+        Random random = new Random();
+        while (lottoNumbers.size() < 6) {
+            int number = random.nextInt(45) + 1;
+            lottoNumbers.add(number);
+        }
+        return lottoNumbers;
     }
 
 

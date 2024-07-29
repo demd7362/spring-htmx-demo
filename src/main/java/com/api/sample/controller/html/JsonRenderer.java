@@ -68,13 +68,27 @@ public class JsonRenderer {
         String json = params.get("values");
         List<Map<String, String>> properties = objectMapper.readValue(json, new TypeReference<>() {});
         jsonService.saveJsonProperties(properties);
-        Html js = Html.javaScript("openDialog('성공', '저장 완료')");
-        return ResponseEntity.ok(js.toString());
+        Html options = jsonService.getIndexOptions();
+        return ResponseEntity.ok(options == null ? "" : options.toString());
     }
+    @GetMapping("/json-property-index/options")
+    public ResponseEntity<String> jsonPropertyIndexOptions() {
+        Html options = jsonService.getIndexOptions();
+        return ResponseEntity.ok(options == null ? "" : options.toString());
+    }
+
     @GetMapping("/load-properties/textarea")
-    public ResponseEntity<String> loadProperties() {
-        Html jsonTextarea = jsonService.loadJsonProperties();
+    public ResponseEntity<String> loadProperties(@RequestParam Map<String, String> params) {
+        long id = Long.parseLong(params.get("id"));
+        Html jsonTextarea = jsonService.loadJsonProperties(id);
         return ResponseEntity.ok(jsonTextarea.toString());
+    }
+    @PostMapping("/delete-json-property")
+    public ResponseEntity<String> deleteJsonProperty(@RequestParam Map<String, String> params) {
+        long id = Long.parseLong(params.get("id"));
+        jsonService.deleteJsonProperties(id);
+        Html options = jsonService.getIndexOptions();
+        return ResponseEntity.ok(options == null ? "" : options.toString());
     }
 
 }

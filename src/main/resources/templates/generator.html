@@ -11,14 +11,16 @@
     <button hx-target="#jsonProperties" hx-get="/hx/json-property/input" hx-swap="beforeend">+</button>
     <button onclick="removeLastChild('#jsonProperties')">-</button>
     <button hx-target="#result" hx-vals='js:{values: collectJsonProperties("#jsonProperties input")}' hx-get="/hx/json-generate/textarea">
-        Generate
+        생성
     </button>
-    <button hx-target="#script" hx-vals='js:{values: collectJsonProperties("#jsonProperties input")}' hx-post="/hx/save-properties/script">
-        Save
+    <button hx-target="#index" hx-vals='js:{values: collectJsonProperties("#jsonProperties input")}' hx-post="/hx/save-properties/script">
+        저장
     </button>
-    <button hx-target="#jsonProperties" hx-get="/hx/load-properties/textarea" hx-swap="innerHTML">
-        Load
+    <button hx-target="#jsonProperties" hx-vals="js:{id: $('#index option:selected').attr('data-val')}" hx-get="/hx/load-properties/textarea" hx-swap="innerHTML">
+        불러오기
     </button>
+    <div id="index" hx-get="/hx/json-property-index/options" hx-trigger="load"></div>
+    <button hx-post="/hx/delete-json-property" hx-target="#index" hx-vals="js:{id: $('#index option:selected').attr('data-val')}">삭제</button>
 </div>
 <div id="jsonProperties"></div>
 <div id="result">
