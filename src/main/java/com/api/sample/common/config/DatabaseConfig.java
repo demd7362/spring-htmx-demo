@@ -2,6 +2,7 @@ package com.api.sample.common.config;
 
 import com.api.sample.common.model.DatabaseSecret;
 import com.api.sample.common.security.PrincipalDetails;
+import com.api.sample.entity.user.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -37,7 +38,7 @@ public class DatabaseConfig {
 
 
     @Bean
-    public AuditorAware<Long> auditorProvider() {
+    public AuditorAware<User> auditorProvider() {
         return () -> {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if(authentication == null){
@@ -45,8 +46,7 @@ public class DatabaseConfig {
             }
             Object principal = authentication.getPrincipal();
             if(principal instanceof PrincipalDetails principalDetails) {
-                Long id = principalDetails.user().getId();
-                return Optional.of(id);
+                return Optional.of(principalDetails.user());
             }
             return Optional.empty();
         };

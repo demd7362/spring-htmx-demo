@@ -57,7 +57,6 @@ public class JsonService {
         }
         User user = SecurityUtils.currentUser();
         JsonPropertyParent jsonPropertyParent = JsonPropertyParent.builder()
-                .user(user)
                 .build();
         jsonPropertyParentRepository.save(jsonPropertyParent);
         List<JsonProperty> jsonProperties = new ArrayList<>();
@@ -81,7 +80,7 @@ public class JsonService {
     @Transactional(readOnly = true)
     public Html loadJsonProperties(long parentId) {
         User user = SecurityUtils.currentUser();
-        List<JsonProperty> jsonProperties = jsonPropertyRepository.findAllByJsonPropertyParentIdAndJsonPropertyParentUserId(parentId, user.getId());
+        List<JsonProperty> jsonProperties = jsonPropertyRepository.findAllByJsonPropertyParentIdAndCreatedBy(parentId, user);
         if (jsonProperties.isEmpty()) {
             throw new HtmxException(Html.javaScript("openDialog('불러오기','저장된 값이 없습니다.')"));
         }
@@ -112,7 +111,7 @@ public class JsonService {
     public Html getIndexOptions() {
         User user = SecurityUtils.currentUser();
         Html root = Html.createRoot("select");
-        List<JsonPropertyParent> parents = jsonPropertyParentRepository.findAllByUserId(user.getId());
+        List<JsonPropertyParent> parents = jsonPropertyParentRepository.findAllByCreatedBy(user);
         if(parents.isEmpty()){
             return null;
         }

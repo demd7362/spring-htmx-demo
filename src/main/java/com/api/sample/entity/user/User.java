@@ -8,15 +8,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "user")
-@Builder
+@SuperBuilder
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 public class User extends CommonProperties implements Serializable {
     @Serial

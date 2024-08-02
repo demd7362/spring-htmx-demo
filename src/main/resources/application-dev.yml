@@ -18,6 +18,9 @@ spring:
     show-sql: true  # SQL 쿼리 로깅 여부
     generate-ddl: false # 이 설정은 스프링 부트에서 제공
     open-in-view: false # HTTP 요청이 완전히 처리될 때까지 데이터베이스 세션을 열어두기
+    properties:
+      hibernate:
+        format_sql: true
   devtools:
     restart:
       enabled: true

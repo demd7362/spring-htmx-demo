@@ -6,12 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "json_property")
-@Builder
+@SuperBuilder
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 public class JsonProperty extends CommonProperties {
     @Id

@@ -7,14 +7,14 @@
         </encoder>
     </appender>
 
-    <springProfile name="!dev">
+    <springProfile name="prod">
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${LOG_PATH:-logs}/sdcs-dev.log</file>
+            <file>${LOG_PATH:-logs}/log.log</file>
             <encoder>
                 <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n</pattern>
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>${LOG_PATH:-logs}/sdcs-dev.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                <fileNamePattern>${LOG_PATH:-logs}/log.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
                 <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                     <maxFileSize>1000MB</maxFileSize>
                 </timeBasedFileNamingAndTriggeringPolicy>
@@ -26,25 +26,28 @@
     <logger name="_org" level="INFO" />
     <logger name="org.thymeleaf" level="INFO" />
     <logger name="org.springframework" level="INFO" />
-    <logger name="org.apache.ibatis" level="INFO" />
 
     <!-- Only log SQL queries -->
     <logger name="jdbc.sqlonly" level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT"/>
-        <springProfile name="!dev">
+        <springProfile name="prod">
             <appender-ref ref="FILE"/>
         </springProfile>
     </logger>
 
-    <!-- Disable other jdbc logs -->
-    <logger name="jdbc" level="OFF" />
-    <logger name="jdbc.connection" level="OFF" />
-    <logger name="jdbc.sqltiming" level="OFF" />
-    <logger name="jdbc.audit" level="OFF" />
-    <logger name="jdbc.resultset" level="OFF" />
-    <logger name="org.mariadb.jdbc" level="WARN" />
-    <logger name="com.zaxxer.hikari" level="ERROR" />
-    <logger name="com.zaxxer.hikari.HikariConfig" level="ERROR" />
+    <!-- JPA/Hibernate 쿼리 로깅 -->
+    <logger name="org.hibernate.SQL" level="DEBUG"/>
+
+    <!-- 쿼리 파라미터 로깅 (선택사항) -->
+
+    <!-- 다른 로그는 끄기 -->
+    <logger name="jdbc" level="OFF"/>
+    <logger name="jdbc.sqlonly" level="OFF"/>
+    <logger name="jdbc.sqltiming" level="OFF"/>
+    <logger name="jdbc.audit" level="OFF"/>
+    <logger name="jdbc.resultset" level="OFF"/>
+    <logger name="jdbc.resultsettable" level="OFF"/>
+    <logger name="jdbc.connection" level="OFF"/>
 
 
     <springProfile name="dev">
