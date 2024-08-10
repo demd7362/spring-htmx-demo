@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
-public class CommonProperties {
+public abstract class CommonProperties {
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate

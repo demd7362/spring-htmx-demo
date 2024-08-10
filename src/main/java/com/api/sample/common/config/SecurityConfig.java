@@ -2,11 +2,10 @@ package com.api.sample.common.config;
 
 
 import com.api.sample.common.constant.Constants;
-import com.api.sample.common.model.OAuth2Secret;
-import com.api.sample.common.security.oauth2.OAuth2UserService;
+import com.api.sample.model.SecretConfig;
 import com.api.sample.common.security.CustomAccessDeniedHandler;
+import com.api.sample.common.security.oauth2.OAuth2UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -89,15 +88,15 @@ public class SecurityConfig {
                 .build();
     }
     @Bean
-    @DependsOn("oAuth2Secret")
-    public ClientRegistrationRepository clientRegistrationRepository(OAuth2Secret oAuth2Secret) {
-        return new InMemoryClientRegistrationRepository(this.kakaoClientRegistration(oAuth2Secret));
+    @DependsOn("secretConfig")
+    public ClientRegistrationRepository clientRegistrationRepository(SecretConfig secretConfig) {
+        return new InMemoryClientRegistrationRepository(this.kakaoClientRegistration(secretConfig.getOauth2()));
     }
 
-    private ClientRegistration kakaoClientRegistration(OAuth2Secret oAuth2Secret) {
+    private ClientRegistration kakaoClientRegistration(SecretConfig.OAuth2 oAuth2) {
         return ClientRegistration.withRegistrationId("kakao") // /oauth2/authorization/{withRegistrationId} url로 접근해서 인증 시작
-                .clientId(oAuth2Secret.getKakaoClient().getClientId())
-                .clientSecret(oAuth2Secret.getKakaoClient().getClientSecret())
+                .clientId(oAuth2.getKakaoClient().getClientId())
+                .clientSecret(oAuth2.getKakaoClient().getClientSecret())
                 .authorizationUri("https://kauth.kakao.com/oauth/authorize")
                 .tokenUri("https://kauth.kakao.com/oauth/token")
                 .userInfoUri("https://kapi.kakao.com/v2/user/me")

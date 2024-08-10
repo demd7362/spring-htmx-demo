@@ -2,7 +2,7 @@ package com.api.sample.controller.html;
 
 import com.api.sample.common.annotation.HtmxRenderer;
 import com.api.sample.common.exception.HtmxException;
-import com.api.sample.common.model.Lottery;
+import com.api.sample.model.Lottery;
 import com.api.sample.common.tool.Html;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

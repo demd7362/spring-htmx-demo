@@ -1,11 +1,11 @@
-package com.api.sample.common.model;
+package com.api.sample.model;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ClientSecret {
+public abstract class ClientSecret {
     private String clientSecret;
     private String clientId;
 }

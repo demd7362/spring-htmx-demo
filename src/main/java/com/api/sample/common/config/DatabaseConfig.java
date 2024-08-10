@@ -1,9 +1,8 @@
 package com.api.sample.common.config;
 
-import com.api.sample.common.model.DatabaseSecret;
+import com.api.sample.model.SecretConfig;
 import com.api.sample.common.security.PrincipalDetails;
 import com.api.sample.entity.user.User;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.sql.DataSource;
-import java.io.IOException;
 import java.util.Optional;
 
 @Configuration
@@ -26,13 +24,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DatabaseConfig {
     @Bean
-    @DependsOn("databaseSecret")
-    public DataSource dataSource(DatabaseSecret databaseSecret) throws IOException {
+    @DependsOn("secretConfig")
+    public DataSource dataSource(SecretConfig secretConfig) {
+        SecretConfig.Database database = secretConfig.getDatabase();
         HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setJdbcUrl(databaseSecret.getJdbcUrl());
-        hikariConfig.setUsername(databaseSecret.getUsername());
-        hikariConfig.setPassword(databaseSecret.getPassword());
-        hikariConfig.setDriverClassName(databaseSecret.getDriverClassName());
+        hikariConfig.setJdbcUrl(database.getJdbcUrl());
+        hikariConfig.setUsername(database.getUsername());
+        hikariConfig.setPassword(database.getPassword());
+        hikariConfig.setDriverClassName(database.getDriverClassName());
         return new HikariDataSource(hikariConfig);
     }
 

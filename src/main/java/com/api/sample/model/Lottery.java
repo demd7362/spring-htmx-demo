@@ -1,4 +1,4 @@
-package com.api.sample.common.model;
+package com.api.sample.model;
 
 import com.api.sample.common.util.RandomUtils;
 import lombok.Getter;
