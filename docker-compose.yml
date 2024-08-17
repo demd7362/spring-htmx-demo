@@ -1,18 +1,34 @@
 version: '3'
 services:
-  app:
+  app1:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "80:80" # host port:container port
+      - "8081:80" # host:container port
     depends_on:
-      - redis  # redis 서비스가 먼저 실행되도록 설정
-    environment:
-      - SPRING_REDIS_HOST=redis  # Redis 호스트 이름 설정
-      - SPRING_REDIS_PORT=6379   # Redis 포트 설정
+      - redis
+
+  app2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8082:80"
+    depends_on:
+      - redis
 
   redis:
-    image: "redis:alpine"  # Redis 이미지
+    image: "redis:alpine"
     ports:
-      - "6379:6379"  # Redis 포트 매핑
+      - "6379:6379"
+
+  nginx:
+    image: "nginx:alpine"
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app1
+      - app2

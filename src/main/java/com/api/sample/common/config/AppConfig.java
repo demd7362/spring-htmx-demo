@@ -1,8 +1,8 @@
 package com.api.sample.common.config;
 
+import com.api.sample.common.tool.SystemEnvironment;
 import com.api.sample.http.subway.SubwayHttpInterface;
 import com.api.sample.model.SecretConfig;
-import com.api.sample.common.tool.SystemEnvironment;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +35,7 @@ public class AppConfig {
     private final ObjectMapper objectMapper;
     private static final String BASE_URL = "https://api.odcloud.kr/api";
     private static final String AUTHORIZATION_PREFIX = "Infuser ";
+
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         RestTemplate restTemplate = builder
@@ -55,22 +56,24 @@ public class AppConfig {
         });
         return restTemplate;
     }
+
     @Bean
     public SecretConfig secretConfig() throws IOException {
         Path path;
-        if(SystemEnvironment.isWindows()){
-            path = Path.of("C:\\config.json");
-        } else if(SystemEnvironment.isLinux()){
+        if (SystemEnvironment.isWindows()) {
+            path = Path.of("/config.json");
+        } else if (SystemEnvironment.isLinux()) {
             path = Path.of("etc/config.json");
         } else {
             throw new RuntimeException("Unsupported OS");
         }
         String json = Files.readString(path);
-        SecretConfig secretConfig =  objectMapper.readValue(json, SecretConfig.class);
+        SecretConfig secretConfig = objectMapper.readValue(json, SecretConfig.class);
         return secretConfig;
     }
+
     @Bean
-    public RestClient.Builder restClientBuilder(RestTemplate restTemplate){
+    public RestClient.Builder restClientBuilder(RestTemplate restTemplate) {
         return RestClient.builder(restTemplate)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
@@ -78,20 +81,22 @@ public class AppConfig {
 
     @Bean
     @Primary
-    public RestClient restClient(RestClient.Builder builder){
+    public RestClient restClient(RestClient.Builder builder) {
         return builder.build();
     }
+
     @Bean
-    public RestClient subwayClient(RestClient.Builder builder, SecretConfig secretConfig){
+    public RestClient subwayClient(RestClient.Builder builder, SecretConfig secretConfig) {
         RestClient client = builder
                 .baseUrl(BASE_URL)
                 .defaultHeader("Authorization", AUTHORIZATION_PREFIX + secretConfig.getApiKey().getGovData())
                 .build();
         return client;
     }
+
     @Bean
     @DependsOn("subwayClient")
-    public SubwayHttpInterface subwayHttpInterface(@Qualifier("subwayClient") RestClient restClient){
+    public SubwayHttpInterface subwayHttpInterface(@Qualifier("subwayClient") RestClient restClient) {
         RestClientAdapter adapter = RestClientAdapter.create(restClient);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
         return factory.createClient(SubwayHttpInterface.class);

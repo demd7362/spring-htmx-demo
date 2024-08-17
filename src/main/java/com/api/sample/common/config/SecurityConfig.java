@@ -48,23 +48,23 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(httpSecurityFormLoginConfigurer -> {
                     httpSecurityFormLoginConfigurer
-                            .loginPage(Constants.URL.LOGIN)
-                            .loginProcessingUrl(Constants.URL.LOGIN)
+                            .loginPage(Constants.ROUTE.LOGIN)
+                            .loginProcessingUrl(Constants.ROUTE.LOGIN)
                             .usernameParameter("username")
                             .passwordParameter("password")
-                            .defaultSuccessUrl(Constants.URL.INDEX);
+                            .defaultSuccessUrl(Constants.ROUTE.INDEX);
                 })
                 .logout(httpSecurityLogoutConfigurer -> {
                     httpSecurityLogoutConfigurer
-                            .logoutUrl(Constants.URL.LOGOUT)
+                            .logoutUrl(Constants.ROUTE.LOGOUT)
                             .deleteCookies("JSESSIONID")
-                            .logoutSuccessUrl(Constants.URL.INDEX)
+                            .logoutSuccessUrl(Constants.ROUTE.INDEX)
                             .permitAll();
                 })
                 .oauth2Login(httpSecurityOAuth2LoginConfigurer -> {
                     httpSecurityOAuth2LoginConfigurer
-                            .defaultSuccessUrl(Constants.URL.INDEX)
-                            .loginPage(Constants.URL.LOGIN)
+                            .defaultSuccessUrl(Constants.ROUTE.INDEX)
+                            .loginPage(Constants.ROUTE.LOGIN)
                             .userInfoEndpoint(userInfoEndpointConfig -> {
                                 userInfoEndpointConfig.userService(oAuth2UserService);
                             });
