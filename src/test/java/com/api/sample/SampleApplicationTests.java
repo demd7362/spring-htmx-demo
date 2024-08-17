@@ -1,10 +1,12 @@
-package com.api.samapi;
+package com.api.sample;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-class SamapiApplicationTests {
+@ActiveProfiles("dev")
+class SampleApplicationTests {
 
 	@Test
 	void contextLoads() {
